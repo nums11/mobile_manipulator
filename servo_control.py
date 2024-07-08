@@ -1,6 +1,6 @@
 import urx
 from time import sleep, time
-from math_utils import limitPositionMovement, printArray
+from math_utils import limitPositionMovement, printArray, getMovement
 import copy
 
 a = 1
@@ -16,7 +16,7 @@ rob.set_payload(2, (0, 0, 0.1))
 sleep(0.2)  #leave some time to robot to process the setup commands
 
 
-max_movement = 0.1
+max_movement = 0.5
 timeout = 0.25
 move_time = 0.4
 
@@ -35,27 +35,18 @@ setpoint[1] += 0.25
 setpoint[2] += 0.25
 
 
-for i in range(50):
+for i in range(25):
+    if(i == 10):
+        setpoint[0] += 1
+
     curr_pose = rob.get_pose().pos.array_ref
-    delta = setpoint - curr_pose
-    print("Delta: " + printArray(delta))
-    delta = limitPositionMovement(delta, max_movement)
-    print("New Delta: " + printArray(delta))
-
     orient = rob.get_pose().orient.log.array_ref
+    movement = getMovement(curr_pose, setpoint, orient, max_movement)
+    print(printArray(movement))
 
-    finalSetpoint = [0,0,0,0,0,0]
-    for i in range(6):
-        if(i < 3):
-            finalSetpoint[i] = curr_pose[i] + delta[i]
-        else:
-            finalSetpoint[i] = orient[i - 3]
-    print("final setpoint: " + printArray(finalSetpoint))
 
-    rob.servojInvKin(finalSetpoint, wait=False, t=move_time)
+    rob.servojInvKin(movement, wait=False, t=move_time)
     sleep(timeout)
-
-
 
 
 

@@ -11,13 +11,20 @@ def limitPositionMovement(desiredMovement, epsilon):
 
     return desiredMovement
 
+def getMovement(currPos, goalPos, currOrientation, max_movement):
+    delta = goalPos - currPos
+    delta = limitPositionMovement(delta, max_movement)
+    output = [0,0,0,0,0,0]
+    for i in range(6):
+        if(i < 3):
+            output[i] = currPos[i] + delta[i]
+        else:
+            output[i] = currOrientation[i - 3]
+    return output
+
 def printArray(arr):
     out = "["
     for i in arr:
         out += "{:.2f},".format(i)
     out += "]"
     return out
-
-array = [0.124124,120.123123, 123.052323]
-a = printArray(array)
-print(a)
