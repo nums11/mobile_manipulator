@@ -10,7 +10,7 @@ init_pose = [1.57, -1.57, -2.66, -0.6, -1.57, 0]
 # init_pose = [3.14, 0, 0, 0, 0, 0]
 
 
-rob = urx.Robot("192.168.1.2")
+rob = urx.Robot("192.168.1.111")
 rob.set_tcp((0, 0, 0, 0, 0, 0))
 rob.set_payload(2, (0, 0, 0.1))
 sleep(0.2)  #leave some time to robot to process the setup commands

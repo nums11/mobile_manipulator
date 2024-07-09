@@ -18,20 +18,31 @@ rob.set_tcp((0, 0, 0, 0, 0, 0))
 rob.set_payload(2, (0, 0, 0.1))
 sleep(0.2)  #leave some time to robot to process the setup commands
 
-init_pose = [1.57, -1.57, -2.66, -0.6, -1.57, 0]
+rob2 = urx.Robot("192.168.2.2")
+rob2.set_tcp((0, 0, 0, 0, 0, 0))
+rob2.set_payload(2, (0, 0, 0.1))
+sleep(0.2)  #leave some time to robot to process the setup commands
+
+
+init_pose = [-1.57, -1.57, -2.66, -0.6, -1.57, 0]
+
+rob.movej(init_pose,a,v,wait=False)
+rob2.movej(init_pose,a,v,wait=False)
+sleep(100)
+
 print("Resetting arm to start position. Please wait...")
 rob.movej(init_pose, a, v)
 print("Finished resetting arm to start position")
 
 
-init_pose_robot = rob.get_pose(True).pos
+init_pose_robot = rob.get_pose(True).pos.array_ref
 print(init_pose_robot)
 
 controller = OculusController()
 
 prev_held_trigger = False
 trigger_pressed = False
-init_pos_controller = {0,0,0}
+init_pos_controller = {0,0,0,0,0,0}
 
 while(True):
     buttons = controller.get_buttons()
@@ -40,7 +51,7 @@ while(True):
     if(triggerPressed):
         if(not prev_held):
             print("New trigger")
-            init_pos_controller = controller.get_cur_pos()[:3]
+            init_pos_controller = controller.get_cur_pose_with_rot()
             init_pose_robot = rob.get_pose(True).pos.array_ref
             print("initial position set to : " + str(init_pos_controller))
             print("Initial robot pos set to: " + str(init_pose_robot))

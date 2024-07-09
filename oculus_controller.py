@@ -28,6 +28,26 @@ class OculusController():
         transform = self.oculus.get_transformations_and_buttons()[0]['r']
 
         return transform[:, 3]
+    
+    def get_ypr(self):
+        transform = self.oculus.get_transformations_and_buttons()[0]['r']
+        yaw = transform[0][0]
+        roll = transform[1][0]
+        pitch = transform[1][1]
+        return yaw, pitch, roll
+
+    def get_cur_pose_with_rot(self):
+        pose = self.get_cur_pos()[:3]
+        y,p,r = self.get_ypr()
+        output = [0,0,0,0,0,0]
+        output[:3] = pose
+        output[3] = y
+        output[4] = p
+        output[5] = r
+        return output
+
+    def getEverything(self):
+        return self.oculus.get_transformations_and_buttons()
 
 
     def get_buttons(self):
@@ -61,13 +81,13 @@ def main():
     reader = OculusController()
     print(reader.get_buttons())
     while True:
-        pos = reader.get_cur_pos()
-        print(f'X delta= {pos[0]},      Y Delta = {pos[1]},     Z Delta = {pos[2]}')
-        # press = reader.get_buttons()
-        # print(press)
-        # print(f"A: {press['A']}, B: {press['B']}, RTrig: {press['RTr']}")
-        # print(not press['A'])
-        time.sleep(.5)
+        print()
+        poses, buttons = reader.getEverything()
+        print(poses)
+        yaw, pitch, roll = reader.get_ypr()
+        print(f'Yaw = {yaw}, Pitch = {pitch}, Roll = {roll}')
+        print(reader.get_cur_pose_with_rot())
+        time.sleep(1)
 
 if __name__ == '__main__':
      main()
