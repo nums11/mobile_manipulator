@@ -4,13 +4,13 @@ from math_utils import limitPositionMovement, printArray, getMovement
 import copy
 
 a = 1
-v = 0.2
+v = 0.5
 
 init_pose = [1.57, -1.57, -2.66, -0.6, -1.57, 0]
 # init_pose = [3.14, 0, 0, 0, 0, 0]
 
 
-rob = urx.Robot("192.168.1.111")
+rob = urx.Robot("192.168.2.2")
 rob.set_tcp((0, 0, 0, 0, 0, 0))
 rob.set_payload(2, (0, 0, 0.1))
 sleep(0.2)  #leave some time to robot to process the setup commands
@@ -22,27 +22,31 @@ move_time = 0.4
 
 rob.movej(init_pose, a, v)
 
-pos = rob.get_pose(True)
+pos = rob.get_pose_array()
 
-orig_pos = pos.pos.array_ref
+orig_pos = pos
 
 print(pos)
 
 setpoint = copy.deepcopy(orig_pos)
 
-setpoint[0] -= 0.5
-setpoint[1] += 0.25
-setpoint[2] += 0.25
-
+# setpoint[0] -= 0.5
+# setpoint[1] += 0.25
+# setpoint[2] += 0.25
+setpoint[3] += 0.5
+setpoint[4] += 0.5
+setpoint[5] += 0.5
 
 for i in range(25):
-    if(i == 10):
-        setpoint[0] += 1
-
-    curr_pose = rob.get_pose().pos.array_ref
+    xyz = rob.get_pose().pos.array_ref
     orient = rob.get_pose().orient.log.array_ref
-    movement = getMovement(curr_pose, setpoint, orient, max_movement)
-    print(printArray(movement))
+    print(xyz)
+    print(orient)
+    printArray(rob.get_pose_array())
+    curr_pose = rob.get_pose_array()
+
+    movement = getMovement(curr_pose, setpoint, max_movement)
+    printArray(movement)
 
 
     rob.servojInvKin(movement, wait=False, t=move_time)
