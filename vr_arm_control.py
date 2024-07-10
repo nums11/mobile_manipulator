@@ -1,8 +1,8 @@
-from oculus_controller import OculusController
+from modules.oculus_controller import OculusController
 import urx
 from math3d.vector import PositionVector
 from time import sleep
-from math_utils import getMovement
+from modules.math_utils import getMovement
 
 # URX -----
 a = 1

@@ -1,6 +1,6 @@
 import urx
 from time import sleep, time
-from math_utils import limitPositionMovement, printArray, getMovement
+from modules.math_utils import limitPositionMovement, printArray, getMovement
 import copy
 
 a = 1
