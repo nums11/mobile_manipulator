@@ -8,11 +8,12 @@ sys.path.append(OCCULUS)
 from oculus_reader.reader import OculusReader
 
 
-class OculusController():
+class OculusWrapper():
     def __init__(self):
         self.oculus = OculusReader()
         time.sleep(1)
-        self.cur_pos = self.get_cur_pos()
+        self.right_controller_home = self.get_right_controller_pose_with_rot()
+        self.left_controller_home = self.get_left_controller_pose_with_rot()
 
     def get_controller_position(self, controller):
         transform = self.oculus.get_transformations_and_buttons()[0][controller]
@@ -53,25 +54,30 @@ class OculusController():
     def get_left_controller_pose_with_rot(self):
         return self.get_controller_pose_with_rot('l')
 
-    def getEverything(self):
-        return self.oculus.get_transformations_and_buttons()
+    def get_right_controller_delta(self):
+        return self.get_right_controller_pose_with_rot() - self.right_controller_home
     
+    def get_left_controller_delta(self):
+        return self.get_left_controller_pose_with_rot() - self.left_controller_home
+
+
     def get_right_trigger(self):
         return self.oculus.get_transformations_and_buttons()[1]['RTr']
     
     def get_left_trigger(self):
         return self.oculus.get_transformations_and_buttons()[1]['LTr']
 
+    def set_right_controller_home(self):
+        self.right_controller_home = self.get_right_controller_pose_with_rot()
 
-    def get_buttons(self):
-        """
-        Returns the buttons.
-        The ones on the right are "A, B, RTr"
-        """
-        return self.oculus.get_transformations_and_buttons()[1]
+    def set_left_controller_home(self):
+        self.left_controller_home = self.get_left_controller_pose_with_rot()
+
+    def getEverything(self):
+        return self.oculus.get_transformations_and_buttons()
 
 def main():
-    reader = OculusController()
+    reader = OculusWrapper()
     print(reader.get_buttons())
     while True:
         print()
