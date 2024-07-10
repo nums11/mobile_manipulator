@@ -1,6 +1,7 @@
 from modules.OculusWrapper import OculusWrapper
 from modules.UR5Wrapper import UR5Wrapper
 from time import sleep
+from modules.math_utils import convertControllerAxesToUR5
 
 right_robot_ip = "192.168.1.2"
 
@@ -23,8 +24,7 @@ while(True):
       right_robot.set_home_position()
     
     delta_movement = controller.get_right_controller_delta()
-    delta_movement[2] *= -1
-    delta_movement[1], delta_movement[2] = delta_movement[2], delta_movement[1] # y is z
+    delta_movement = convertControllerAxesToUR5(delta_movement)
     print("Delta is: " + str(delta_movement))
 
     right_robot.go_to_position(delta_movement, wait=False)

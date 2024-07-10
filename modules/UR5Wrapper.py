@@ -13,18 +13,19 @@ class UR5Wrapper:
         self.init_pose = [1.57, -1.57, -2.66, -0.6, -1.57, 0]
         self.home_position = self.robot.get_cur_pose_with_rot()
 
-
+    # Sets relative position
     def set_home_position(self):
         self.home_position = self.robot.get_cur_pose_with_rot()
 
-    # this will be in delta relative to home position
+    # Takes in delta position change from home position
     def go_to_position(self, position, wait=False):
         curr_pose = self.robot.get_cur_pose_with_rot()
         desired_pose = getMovement(curr_pose, self.home_position + position, self.max_movement)
         self.robot.servojInvKin(desired_pose, wait=wait, t=self.move_time)
 
+    # Goes to predefined starting position
     def reset_to_init(self):
-        self.robot.movej(self.home_position)
+        self.robot.movej(self.init_pose)
 
     def stop(self):
         self.robot.stopj()

@@ -15,6 +15,7 @@ class OculusWrapper():
         self.right_controller_home = self.get_right_controller_pose_with_rot()
         self.left_controller_home = self.get_left_controller_pose_with_rot()
 
+    # Returns global position
     def get_controller_position(self, controller):
         transform = self.oculus.get_transformations_and_buttons()[0][controller]
         return transform[:, 3]
@@ -25,6 +26,7 @@ class OculusWrapper():
     def get_left_controller_position(self):
         return self.get_controller_position('l')
     
+    # returns global yaw, pitch, roll
     def get_controller_ypr(self, controller):
         transform = self.oculus.get_transformations_and_buttons()[0][controller]
         yaw = transform[0][0]
@@ -38,6 +40,7 @@ class OculusWrapper():
     def get_left_controller_ypr(self):
         return self.get_controller_ypr('l')
     
+    # Returns global position and yaw, pitch, roll
     def get_controller_pose_with_rot(self, controller):
         pose = self.get_controller_position(controller)[:3]
         y,p,r = self.get_controller_ypr(controller)
@@ -54,12 +57,12 @@ class OculusWrapper():
     def get_left_controller_pose_with_rot(self):
         return self.get_controller_pose_with_rot('l')
 
+    # Returns delta position relative to home
     def get_right_controller_delta(self):
         return self.get_right_controller_pose_with_rot() - self.right_controller_home
     
     def get_left_controller_delta(self):
         return self.get_left_controller_pose_with_rot() - self.left_controller_home
-
 
     def get_right_trigger(self):
         return self.oculus.get_transformations_and_buttons()[1]['RTr']
