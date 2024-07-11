@@ -46,9 +46,9 @@ class OculusWrapper():
         y,p,r = self.get_controller_ypr(controller)
         output = [0,0,0,0,0,0]
         output[:3] = pose
-        output[3] = r
-        output[4] = p
-        output[5] = y
+        # output[3] = r
+        # output[4] = p
+        # output[5] = y
         output = np.array(output)
         return output
     
