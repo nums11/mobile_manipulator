@@ -13,7 +13,7 @@ class OculusWrapper():
         self.oculus = OculusReader()
         time.sleep(1)
         self.right_controller_home = self.get_right_controller_pose_with_rot()
-        self.left_controller_home = self.get_left_controller_pose_with_rot()
+        # self.left_controller_home = self.get_left_controller_pose_with_rot()
 
     # Returns global position
     def get_controller_position(self, controller):
@@ -46,9 +46,10 @@ class OculusWrapper():
         y,p,r = self.get_controller_ypr(controller)
         output = [0,0,0,0,0,0]
         output[:3] = pose
-        output[3] = y
+        output[3] = r
         output[4] = p
-        output[5] = r
+        output[5] = y
+        output = np.array(output)
         return output
     
     def get_right_controller_pose_with_rot(self):
