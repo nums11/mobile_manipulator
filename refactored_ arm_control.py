@@ -1,7 +1,7 @@
-from modules.OculusWrapper import OculusWrapper
-from modules.UR5Wrapper import UR5Wrapper
+from wrappers.OculusWrapper import OculusWrapper
+from wrappers.UR5Wrapper import UR5Wrapper
 from time import sleep
-from modules.math_utils import convertControllerAxesToUR5
+from wrappers.math_utils import convertControllerAxesToUR5
 
 right_robot_ip = "192.168.1.2"
 
