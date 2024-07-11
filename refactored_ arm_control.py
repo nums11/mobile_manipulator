@@ -19,9 +19,12 @@ left_robot.reset_to_init()
 prev_held_trigger = False
 
 while(True):
-  right_trigger = controller.get_right_trigger()
+  reset_robots = controller.get_right_A()
+  if(reset_robots):
+    right_robot.reset_to_init()
+    left_robot.reset_to_init()
 
-  print(controller.getEverything())
+  right_trigger = controller.get_right_trigger()
 
   if(right_trigger):
     if(not prev_held_trigger):
