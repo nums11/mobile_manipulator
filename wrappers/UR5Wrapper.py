@@ -26,6 +26,8 @@ class UR5Wrapper:
 
     # Takes in delta position change from home position
     def go_to_position(self, position, wait=False):
+        position[5] = 0 # Disabled yaw rotation
+
         curr_pose = self.robot.get_pose_array()
         print("Current pose: " + str(curr_pose))
         print("Desired pose: " + str(self.home_position + position))
@@ -35,7 +37,7 @@ class UR5Wrapper:
 
     # Goes to predefined starting position
     def reset_to_init(self):
-        self.robot.movej(self.init_pose, 1, 0.5)
+        self.robot.movej(self.init_pose, acc=1, vel=0.5)
         self.set_home_position()
 
     def stop(self):
