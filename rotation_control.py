@@ -1,69 +1,28 @@
-from oculus_controller import OculusController
-import urx
-from math3d.vector import PositionVector
+from wrappers.OculusWrapper import OculusWrapper
+from wrappers.UR5Wrapper import UR5Wrapper
 from time import sleep
-from modules.math_utils import getMovement
+from wrappers.math_utils import convertControllerAxesToUR5
 
-# URX -----
-a = 1
-v = 0.2
+import sys, os
+sys.path.append('/home/weirdlab/mobile_manipulator/modules/math_utils.py')
 
-max_movement = 0.35
+right_robot_ip = "192.168.1.2"
+
 timeout = 0.25
-move_time = 0.4
 
+right_robot = UR5Wrapper(right_robot_ip)
 
-rob = urx.Robot("192.168.1.2")
-rob.set_tcp((0, 0, 0, 0, 0, 0))
-rob.set_payload(2, (0, 0, 0.1))
-sleep(0.2)  #leave some time to robot to process the setup commands
+right_robot.reset_to_init()
+sleep(2)
 
-init_pose = [-1.57, -1.57, -2.66, -0.6, -1.57, 0]
+right_robot.go_to_position([0,0,0,0,0,0.1])
+sleep(5)
+right_robot.go_to_position([0,0,0,0,0,0.3])
+sleep(5)
+right_robot.go_to_position([0,0,0,0,0,0.5])
+sleep(5)
 
-print("Resetting arm to start position. Please wait...")
-rob.movej(init_pose, a, v)
-print("Finished resetting arm to start position")
-
-
-init_pose_robot = rob.get_pose_array()
-print(init_pose_robot)
-
-controller = OculusController()
-
-prev_held_trigger = False
-trigger_pressed = False
-init_pos_controller = {0,0,0,0,0,0}
-
-while(True):
-    buttons = controller.get_buttons()
-    triggerPressed = buttons['RTr']
-
-    if(triggerPressed):
-        if(not prev_held):
-            print("New trigger")
-            init_pos_controller = controller.get_cur_pose_with_rot()
-            init_pose_robot = rob.get_pose_array()
-            print("initial position set to : " + str(init_pos_controller))
-            print("Initial robot pos set to: " + str(init_pose_robot))
-        
-        print()
-        curr_pos_controller = controller.get_cur_pos()[:3]
-        delta_controller = curr_pos_controller - init_pos_controller
-        delta_controller[2] *= -1
-        print("Delta is: " + str(delta_controller))
-        delta_controller[1], delta_controller[2] = delta_controller[2], delta_controller[1] # y is z
-
-        goal_pos_robot = init_pose_robot + delta_controller
-
-        curr_pos_robot = rob.get_pose().pos.array_ref
-        orientation = rob.get_pose().orient.log.array_ref
-        movement = getMovement(curr_pos_robot, goal_pos_robot, orientation, max_movement)
-        
-        print("Robot delta is: " + str(movement))
-        rob.servojInvKin(movement, wait=False, t=move_time)
-        sleep(timeout)
-    else:
-        rob.stopl(0.1)
-
-    prev_held = triggerPressed
-    # sleep(0.5)
+# right_robot.go_to_position([0.2,0.3,0.2,0,0,0])
+# sleep(2)
+# right_robot.go_to_position([-0.2,0.1,-0.2,0,0,0])
+# sleep(2)
