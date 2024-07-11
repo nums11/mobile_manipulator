@@ -15,12 +15,15 @@ right_robot = UR5Wrapper(right_robot_ip)
 right_robot.reset_to_init()
 sleep(2)
 
-right_robot.go_to_position([0,0,0,0,0,0.1])
+# x is roll
+# y is pitch
+# z is yaw
+right_robot.go_to_position([0,0,0,0,0,1])
 sleep(5)
-right_robot.go_to_position([0,0,0,0,0,0.3])
-sleep(5)
-right_robot.go_to_position([0,0,0,0,0,0.5])
-sleep(5)
+# right_robot.go_to_position([0,0,0,0,0,0.3])
+# sleep(5)
+# right_robot.go_to_position([0,0,0,0,0,0.5])
+# sleep(5)
 
 # right_robot.go_to_position([0.2,0.3,0.2,0,0,0])
 # sleep(2)
