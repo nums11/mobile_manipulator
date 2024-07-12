@@ -43,3 +43,6 @@ class UR5Wrapper:
 
     def modbusMode(self):
         self.robot.modbusMode()
+
+    def sendProgram(self, prog):
+        self.robot.sendAProgram(prog)

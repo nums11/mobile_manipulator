@@ -29,8 +29,8 @@ def run_sync_simple_client(comm, host, port, framer=Framer.SOCKET):
 
     print("get and verify data")
     try:
-        r = client.write_register(128, 1)
-        r = client.write_register(129, 1)
+        r = client.write_register(128, 2)
+        r = client.write_register(129, 2)
         r = client.write_register(130, 1)
         r = client.write_register(131, 0)
         r = client.write_register(132, 0)
