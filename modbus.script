@@ -1,1 +1,10 @@
 global buffer = [0,0,0,0,0,0]
+
+buffer[0] = read_port_register(128)
+buffer[1] = read_port_register(129)
+buffer[2] = read_port_register(130)
+buffer[3] = read_port_register(131)
+buffer[4] = read_port_register(132)
+buffer[5] = read_port_register(133)
+
+servoj(get_inverse_kin(buffer), 1, 0.2, 10)
