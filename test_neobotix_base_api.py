@@ -22,5 +22,3 @@ print("Enter key for movement: 'w', 'a', 's', 'd'")
 with Listener(
         on_press=on_press) as listener:
     listener.join()
-
-zzzzZZZzzzthe_usual

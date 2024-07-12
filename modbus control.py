@@ -28,22 +28,27 @@ def run_sync_simple_client(comm, host, port, framer=Framer.SOCKET):
     client.connect()
 
     print("get and verify data")
-    for i in range(1, 2):
-        try:
-            r = client.write_register(128, i)
-        except ModbusException as exc:
-            print(f"Received ModbusException({exc}) from library")
-            client.close()
-            return
-        if r.isError():
-            print(f"Received Modbus library error({r})")
-            client.close()
-            return
-        if isinstance(r, ExceptionResponse):
-            print(f"Received Modbus library exception ({r})")
-            # THIS IS NOT A PYTHON EXCEPTION, but a valid modbus message
-            client.close()
-        sleep(0.01)
+    try:
+        r = client.write_register(128, 1)
+        r = client.write_register(129, 1)
+        r = client.write_register(130, 1)
+        r = client.write_register(131, 0)
+        r = client.write_register(132, 0)
+        r = client.write_register(133, 0)
+
+    except ModbusException as exc:
+        print(f"Received ModbusException({exc}) from library")
+        client.close()
+        return
+    if r.isError():
+        print(f"Received Modbus library error({r})")
+        client.close()
+        return
+    if isinstance(r, ExceptionResponse):
+        print(f"Received Modbus library exception ({r})")
+        # THIS IS NOT A PYTHON EXCEPTION, but a valid modbus message
+        client.close()
+    sleep(0.01)
 
 
     print("close connection")

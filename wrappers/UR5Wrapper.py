@@ -37,3 +37,9 @@ class UR5Wrapper:
 
     def stop(self):
         self.robot.stopj()
+
+    def set_freedrive(self):
+        self.robot.set_freedrive(True)
+
+    def modbusMode(self):
+        self.robot.modbusMode()
