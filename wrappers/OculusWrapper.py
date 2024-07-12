@@ -77,11 +77,14 @@ class OculusWrapper():
     def get_left_gripper(self):
         return self.oculus.get_transformations_and_buttons()[1]['LG']
     
-    def get_right_A(self):
+    def get_A(self):
         return self.oculus.get_transformations_and_buttons()[1]['A']
     
-    # def get_left_A(self):
-    #     return self.oculus.get_transformations_and_buttons()[1]['LTr']
+    def get_X(self):
+        return self.oculus.get_transformations_and_buttons()[1]['X']
+
+    def get_right_js(self):
+        return self.oculus.get_transformations_and_buttons()[1]['rightJS']
 
     def set_right_controller_home(self):
         self.right_controller_home = self.get_right_controller_pose_with_rot()
