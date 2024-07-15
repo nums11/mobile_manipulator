@@ -1,3 +1,3 @@
 while (True):
-    servoj(get_inverse_kin(p[read_port_register(128)*0.1,0.3,0.3,0,0,0]), 1, 1, 1)
+    servoj(get_inverse_kin(p[read_port_register(128)*0.1,0.3,0.3,0,0,0]), 1, 1, 0.08)
 end
