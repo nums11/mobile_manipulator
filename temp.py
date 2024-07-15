@@ -1,32 +1,16 @@
 from wrappers.UR5Wrapper import UR5Wrapper
 from time import sleep
 from wrappers.math_utils import printArray
-import pymodbus.client as ModbusClient
-from pymodbus import (
-    ExceptionResponse,
-    ModbusException,
-    pymodbus_apply_logging_config
-)
-from pymodbus.framer import Framer
-import socket
+from wrappers.ModbusWrapper import ModbusWrapper
 
 
 right_robot_ip = "192.168.1.2"
-comms = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-comms.connect((right_robot_ip, 30003))
+right_robot = UR5Wrapper(right_robot_ip)
 
-client = ModbusClient.ModbusTcpClient(right_robot_ip,port=502,framer=Framer.SOCKET)
-r = client.write_register(128, 0)
+right_robot.reset_to_init()
+robot_pose = right_robot.get_pose()
+printArray(robot_pose)
 
-script_file = open("modbus.script",'rb')
-script = script_file.read()
-print(script)
-comms.sendall(script)
-
-print("Modbus running")
-sleep(3)
-
-val = 6
-print("New val:" + str(val))
-r = client.write_register(128, int(val))
+modbus = ModbusWrapper(right_robot_ip)
+modbus.updateModbusPosition(robot_pose)
 
