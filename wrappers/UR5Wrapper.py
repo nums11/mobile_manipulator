@@ -24,6 +24,11 @@ class UR5Wrapper:
     def set_home_position(self):
         self.home_position = self.robot.get_pose_array()
 
+    def makeRobotRelativePose(self, position):
+        curr_pose = self.robot.get_pose_array()
+        desired_pose = getMovement(curr_pose, self.home_position + position, self.max_movement)
+        return desired_pose
+
     # Takes in delta position change from home position
     def go_to_position(self, position, wait=False):
         curr_pose = self.robot.get_pose_array()

@@ -88,6 +88,7 @@ class OculusWrapper():
 
     def set_right_controller_home(self):
         self.right_controller_home = self.get_right_controller_pose_with_rot()
+        print("Home", self.right_controller_home)
 
     def set_left_controller_home(self):
         self.left_controller_home = self.get_left_controller_pose_with_rot()

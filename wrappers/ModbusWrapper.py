@@ -1,9 +1,6 @@
 import pymodbus.client as ModbusClient
-from pymodbus import (
-    ExceptionResponse,
-    ModbusException,
-    pymodbus_apply_logging_config
-)
+from pymodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
+from pymodbus.constants import Endian
 from pymodbus.framer import Framer
 import numpy as np
 
@@ -19,8 +16,14 @@ class ModbusWrapper:
   # Give position as a list of 6 floats, this will multiply by 100 and then write it
   def updateModbusPosition(self, position):
     position = np.array(position) * 100
-    for i in range(6):
-      self.client.write_register(128 + i, int(position[i]))
+    builder = BinaryPayloadBuilder(byteorder=Endian.BIG, wordorder=Endian.BIG)
+
+    for i in range(1): # don't update the ypr for now
+      builder.reset()
+      builder.add_16bit_int(int(position[i]))
+      payload = builder.to_registers()
+      print(payload)
+      self.client.write_register(128 + i, payload[0])
   
   def close(self):
     self.client.close()
