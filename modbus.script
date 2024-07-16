@@ -2,7 +2,7 @@ global position = [0,0,0,0,0,0]
 
 def convert_port_to_val(port):
     val = read_port_register(port)
-    if val > 32767:
+    if val > 32768:
         val = xval_1 - 65536
     end
     return val
