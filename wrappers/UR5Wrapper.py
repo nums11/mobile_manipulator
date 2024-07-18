@@ -1,6 +1,11 @@
 import urx
 from wrappers.math_utils import getMovement
 from time import sleep
+import pymodbus.client as ModbusClient
+from pymodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
+from pymodbus.constants import Endian
+from pymodbus.framer import Framer
+import numpy as np
 
 """
 Class that allows you to set a home position and then command new positions for it to go to.
@@ -16,6 +21,13 @@ class UR5Wrapper:
         self.robot.set_tcp((0, 0, 0, 0, 0, 0))
         self.robot.set_payload(2, (0, 0, 0.1))
         sleep(0.2)
+
+        self.client = ModbusClient.ModbusTcpClient(
+        robot_ip,
+        port=502,
+        framer=Framer.SOCKET
+        )
+        self.client.connect()
 
     def get_pose(self):
         return self.robot.get_pose_array()
@@ -33,7 +45,8 @@ class UR5Wrapper:
     def go_to_position(self, position, wait=False):
         curr_pose = self.robot.get_pose_array()
         desired_pose = getMovement(curr_pose, self.home_position + position, self.max_movement)
-        self.robot.servojInvKin(desired_pose, wait=wait, t=self.move_time)
+        # self.robot.servojInvKin(desired_pose, wait=wait, t=self.move_time)
+        self.updateModbusPosition(desired_pose)
 
     # Goes to predefined starting position
     def reset_to_init(self):
@@ -51,3 +64,14 @@ class UR5Wrapper:
 
     def sendProgram(self, prog):
         self.robot.sendAProgram(prog)
+
+      # Give position as a list of 6 floats, this will multiply by 100 and then write it
+    def updateModbusPosition(self, position):
+        position = np.array(position) * 100
+        builder = BinaryPayloadBuilder(byteorder=Endian.BIG, wordorder=Endian.BIG)
+        for i in range(3): # don't update the ypr for now
+            builder.reset()
+            builder.add_16bit_int(int(position[i]))
+            payload = builder.to_registers()
+            print(payload)
+            self.client.write_register(128 + i, payload[0])
