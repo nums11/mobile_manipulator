@@ -68,4 +68,4 @@ def run_sync_simple_client(comm, host, port, framer=Framer.SOCKET):
     client.close()
 
 if __name__ == "__main__":
-    run_sync_simple_client("tcp", "192.168.1.2", "502")
+    run_sync_simple_client("tcp", "192.168.2.2", "502")

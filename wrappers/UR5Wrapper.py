@@ -14,7 +14,7 @@ Class that allows you to set a home position and then command new positions for 
 class UR5Wrapper:
     def __init__(self, robot_ip):
         self.robot = urx.Robot(robot_ip)
-        self.max_movement = 0.3
+        self.max_movement = 0.1
         self.move_time = 0.5
         self.init_pose = [1.57, -1.57, -2.66, -0.6, -1.57, 0]
         self.home_position = self.robot.get_pose_array()

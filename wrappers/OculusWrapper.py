@@ -6,6 +6,7 @@ import time
 import numpy as np
 sys.path.append(OCCULUS)
 from oculus_reader.reader import OculusReader
+from scipy.spatial.transform._rotation import Rotation 
 
 
 class OculusWrapper():
@@ -29,9 +30,12 @@ class OculusWrapper():
     # returns global yaw, pitch, roll
     def get_controller_ypr(self, controller):
         transform = self.oculus.get_transformations_and_buttons()[0][controller]
-        yaw = transform[0][0]
-        roll = transform[1][0]
-        pitch = transform[1][1]
+        rot_matrix = transform[:3,:3] # 3x3 rotation matrix
+        rot_matrix_vals = Rotation.from_matrix(rot_matrix)
+        pry = rot_matrix_vals.as_euler('XYZ')
+        pitch = pry[0]
+        roll = pry[1]
+        yaw = pry[2]
         return yaw, pitch, roll
     
     def get_right_controller_ypr(self):
@@ -98,15 +102,14 @@ class OculusWrapper():
 
 def main():
     reader = OculusWrapper()
-    print(reader.get_buttons())
+    print(reader.getEverything())
     while True:
         print()
         poses, buttons = reader.getEverything()
-        print(poses)
-        yaw, pitch, roll = reader.get_ypr()
+        # print(poses)
+        yaw, pitch, roll = reader.get_right_controller_ypr()
         print(f'Yaw = {yaw}, Pitch = {pitch}, Roll = {roll}')
-        print(reader.get_cur_pose_with_rot())
-        time.sleep(1)
+        time.sleep(0.1)
 
 if __name__ == '__main__':
      main()

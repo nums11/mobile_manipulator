@@ -6,7 +6,7 @@ from wrappers.OculusWrapper import OculusWrapper
 
 
 
-right_robot_ip = "192.168.1.2"
+right_robot_ip = "192.168.2.2"
 right_robot = UR5Wrapper(right_robot_ip)
 
 right_robot.reset_to_init()
@@ -19,6 +19,8 @@ modbus.updateModbusPosition(robot_pose)
 controller = OculusWrapper()
 
 init_pose = [0.11,0.29,0.24,0.00,0.18,3.14,]
+
+print("Ready")
 
 prev_held_trigger = False
 while(True):
@@ -38,7 +40,7 @@ while(True):
     delta_movement = convertControllerAxesToUR5(delta_movement)
 
     movement = right_robot.makeRobotRelativePose(delta_movement)
-    printArray(movement)
+    # printArray(movement)
 
     modbus.updateModbusPosition(movement)
     sleep(0.01)
