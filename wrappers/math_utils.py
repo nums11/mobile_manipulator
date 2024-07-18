@@ -19,7 +19,7 @@ def getMovement(currPos, goalPos, max_movement):
 def convertControllerAxesToUR5(controllerDelta):
     controllerDelta[2] *= -1
     controllerDelta[1], controllerDelta[2] = controllerDelta[2], controllerDelta[1] # y is z
-    controllerDelta[3] *= -1
+    # controllerDelta[3] *= -1
     return controllerDelta
 
 def printArray(arr):
