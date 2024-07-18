@@ -16,6 +16,7 @@ printArray(robot_pose)
 modbus = ModbusWrapper(right_robot_ip)
 modbus.updateModbusPosition(robot_pose)
 
+
 controller = OculusWrapper()
 
 init_pose = [0.11,0.29,0.24,0.00,0.18,3.14,]
@@ -40,11 +41,14 @@ while(True):
     delta_movement = convertControllerAxesToUR5(delta_movement)
 
     movement = right_robot.makeRobotRelativePose(delta_movement)
-    # printArray(movement)
+    printArray(movement)
 
-    modbus.updateModbusPosition(movement)
+    # print("New movement")
+    right_robot.updateModbusPosition(movement)
+
+    # modbus.updateModbusPosition(movement)
     sleep(0.01)
 
   prev_held_trigger = right_trigger
 
-    
+  

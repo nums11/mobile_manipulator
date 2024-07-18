@@ -22,7 +22,7 @@ class ModbusWrapper:
       builder.reset()
       builder.add_16bit_int(int(position[i]))
       payload = builder.to_registers()
-      # print(payload)
+      print(payload)
       self.client.write_register(128 + i, payload[0])
   
   def close(self):
