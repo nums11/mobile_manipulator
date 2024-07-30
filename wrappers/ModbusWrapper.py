@@ -4,6 +4,7 @@ from pymodbus.constants import Endian
 from pymodbus.framer import Framer
 import numpy as np
 
+
 class ModbusWrapper:
   def __init__(self, robot_ip):
     self.client = ModbusClient.ModbusTcpClient(
