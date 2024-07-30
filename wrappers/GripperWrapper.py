@@ -4,7 +4,7 @@ from robotiq_modbus_controller.driver import RobotiqModbusRtuDriver
 Class meant to interface with the Robotiq 3F gripper via USB.
 Currently only supports the RTU driver and works on overall hand control, not per finger
 """
-class Gripper:
+class GripperWrapper:
   def __init__(self, port: str):
     self.gripper = RobotiqModbusRtuDriver(port)
     self.status = self.gripper.status()
@@ -31,7 +31,7 @@ class Gripper:
     self.gripper.move(pos=pos, speed=speed, force=force)
     
 if __name__ == "__main__":
-  gripper = Gripper('COM6')
+  gripper = GripperWrapper('COM6')
   
   gripper.update()
   while not gripper.isReady():

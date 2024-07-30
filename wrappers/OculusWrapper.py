@@ -76,7 +76,7 @@ class OculusWrapper():
         return self.oculus.get_transformations_and_buttons()[1]['LTr']
     
     def get_right_gripper(self):
-        return self.oculus.get_transformations_and_buttons()[1]['RG']
+        return self.oculus.get_transformations_and_buttons()[1]['RG'], self.oculus.get_transformations_and_buttons()[1]['rightGrip'][0]
     
     def get_left_gripper(self):
         return self.oculus.get_transformations_and_buttons()[1]['LG']
