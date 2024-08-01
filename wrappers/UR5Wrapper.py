@@ -58,16 +58,7 @@ class UR5Wrapper:
     def stop(self):
         self.robot.stopj()
 
-    def set_freedrive(self):
-        self.robot.set_freedrive(True)
-
-    def modbusMode(self):
-        self.robot.modbusMode()
-
-    def sendProgram(self, prog):
-        self.robot.sendAProgram(prog)
-
-      # Give position as a list of 6 floats, this will multiply by 100 and then write it
+    # Give position as a list of 6 floats, this will multiply by 100 and then write it
     def updateModbusPosition(self, position):
         position = np.array(position) * 100
         builder = BinaryPayloadBuilder(byteorder=Endian.BIG, wordorder=Endian.BIG)
