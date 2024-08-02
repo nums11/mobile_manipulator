@@ -29,7 +29,6 @@ class UR5Wrapper:
         )
         self.client.connect()
         self.updateModbusPosition([0.11,0.29,0.24,0.00,0.18,3.14])
-        sleep(2)
 
     def get_pose(self):
         return self.robot.get_pose_array()

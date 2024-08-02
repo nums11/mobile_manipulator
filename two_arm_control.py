@@ -5,11 +5,11 @@ from wrappers.math_utils import convertControllerAxesToUR5
 
 # URX -------------------------
 
-right_robot_ip = "192.168.2.2"
-left_robot_ip = "192.168.1.2"
+right_robot_ip = "192.168.1.2"
+left_robot_ip = "192.168.2.2"
 
 
-timeout = 0.25
+timeout = 0.01
 
 right_robot = UR5Wrapper(right_robot_ip)
 left_robot = UR5Wrapper(left_robot_ip)
@@ -18,11 +18,12 @@ controller = OculusWrapper()
 right_robot.reset_to_init()
 left_robot.reset_to_init()
 
+print("Ready")
+
 prev_held_right_trigger = False
 prev_held_left_trigger = False
 
 while(True):
-    all = controller.getEverything()
     reset_robots = controller.get_X() or controller.get_A()
     if(reset_robots):
         right_robot.reset_to_init()
@@ -39,8 +40,7 @@ while(True):
         delta_movement = convertControllerAxesToUR5(delta_movement)
 
         right_robot.go_to_position(delta_movement, wait=False)
-    else:
-        right_robot.stop()
+
     prev_held_right_trigger = right_trigger
 
     left_trigger = controller.get_left_trigger()
@@ -54,8 +54,7 @@ while(True):
         delta_movement = convertControllerAxesToUR5(delta_movement)
 
         left_robot.go_to_position(delta_movement, wait=False)
-    else:
-        left_robot.stop()
+
     prev_held_left_trigger = left_trigger
 
     if(left_trigger or right_trigger):

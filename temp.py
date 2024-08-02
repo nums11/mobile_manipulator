@@ -5,7 +5,7 @@ from wrappers.math_utils import convertControllerAxesToUR5, printArray
 
 # URX -------------------------
 
-left_robot_ip = "192.168.2.2"
+left_robot_ip = "192.168.1.2"
 
 
 timeout = 0.01
