@@ -62,9 +62,8 @@ class UR5Wrapper:
     def updateModbusPosition(self, position):
         position = np.array(position) * 100
         builder = BinaryPayloadBuilder(byteorder=Endian.BIG, wordorder=Endian.BIG)
-        for i in range(3): # don't update the ypr for now
+        for i in range(6): # don't update the ypr for now
             builder.reset()
             builder.add_16bit_int(int(position[i]))
             payload = builder.to_registers()
-            print(payload)
             self.client.write_register(128 + i, payload[0])
