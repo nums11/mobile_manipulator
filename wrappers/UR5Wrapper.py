@@ -19,7 +19,7 @@ class UR5Wrapper:
         self.init_pose = [1.57, -1.57, -2.66, -0.6, -1.57, 0]
         self.home_position = self.robot.get_pose_array()
         self.robot.set_tcp((0, 0, 0, 0, 0, 0))
-        self.robot.set_payload(2, (0, 0, 0.1))
+        self.robot.set_payload(2.3, (0, 0, 0.15))
         sleep(0.2)
 
         self.client = ModbusClient.ModbusTcpClient(
@@ -54,6 +54,7 @@ class UR5Wrapper:
     def reset_to_init(self):
         self.robot.movej(self.init_pose, acc=1, vel=0.5)
         self.set_home_position()
+        self.updateModbusPosition([0.11,0.29,0.24,0.00,0.18,3.14])
 
     def stop(self):
         self.robot.stopj()
