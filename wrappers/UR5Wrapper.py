@@ -16,7 +16,8 @@ class UR5Wrapper:
         self.robot = urx.Robot(robot_ip)
         self.max_movement = 0.2
         self.move_time = 0.5
-        self.init_pose = [1.57, -1.57, -2.66, -0.6, -1.57, 0]
+        self.init_pose = [1.57, -1.57, -2.66, -2.02, -1.57, 0.2]
+        self.init_pose_modbus = [0.11,0.27,0.07,-0.21,-2.08,-2.15]
         self.home_position = self.robot.get_pose_array()
         self.robot.set_tcp((0, 0, 0, 0, 0, 0))
         self.robot.set_payload(2.3, (0, 0, 0.15))
@@ -28,10 +29,11 @@ class UR5Wrapper:
         framer=Framer.SOCKET
         )
         self.client.connect()
-        self.updateModbusPosition([0.11,0.29,0.24,0.00,0.18,3.14])
+        self.updateModbusPosition(self.init_pose_modbus)
 
     def get_pose(self):
-        return self.robot.get_pose_array()
+        print(self.robot.getj(True))
+        return self.robot.get_pose_array(True)
 
     # Sets relative position
     def set_home_position(self):
@@ -46,14 +48,15 @@ class UR5Wrapper:
     def go_to_position(self, position, wait=False):
         curr_pose = self.robot.get_pose_array()
         desired_pose = getMovement(curr_pose, self.home_position + position, self.max_movement)
-        # self.robot.servojInvKin(desired_pose, wait=wait, t=self.move_time)
+        print(desired_pose)
+
         self.updateModbusPosition(desired_pose)
 
     # Goes to predefined starting position
     def reset_to_init(self):
         self.robot.movej(self.init_pose, acc=1, vel=0.5)
         self.set_home_position()
-        self.updateModbusPosition([0.11,0.29,0.24,0.00,0.18,3.14])
+        self.updateModbusPosition(self.init_pose_modbus)
 
     def stop(self):
         self.robot.stopj()
@@ -66,4 +69,5 @@ class UR5Wrapper:
             builder.reset()
             builder.add_16bit_int(int(position[i]))
             payload = builder.to_registers()
+            print(payload)
             self.client.write_register(128 + i, payload[0])
