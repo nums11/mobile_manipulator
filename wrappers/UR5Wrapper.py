@@ -67,3 +67,7 @@ class UR5Wrapper:
             builder.add_16bit_int(int(position[i]))
             payload = builder.to_registers()
             self.client.write_register(128 + i, payload[0])
+        
+    # Returns currently the end effector position    
+    def getState(self):
+        return np.array(self.get_pose())        

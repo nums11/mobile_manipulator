@@ -1,4 +1,5 @@
 from robotiq_modbus_controller.driver import RobotiqModbusRtuDriver
+import numpy as np
 
 """
 Class meant to interface with the Robotiq 3F gripper via USB.
@@ -29,6 +30,10 @@ class GripperWrapper:
   
   def move(self, pos: int, speed: int = 255, force: int = 0):
     self.gripper.move(pos=pos, speed=speed, force=force)
+    
+  # Currently only returns the position of the whole gripper
+  def getState(self):
+    return np.array(self.status.position)
     
 if __name__ == "__main__":
   gripper = GripperWrapper('COM6')

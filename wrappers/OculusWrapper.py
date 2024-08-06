@@ -98,6 +98,10 @@ class OculusWrapper():
 
     def getEverything(self):
         return self.oculus.get_transformations_and_buttons()
+    
+    # Returns the delta movements, and the button states
+    def getState(self):
+        return np.array(self.get_right_controller_delta(), self.get_left_controller_delta(), self.getEverything()[1])
 
 def main():
     reader = OculusWrapper()
