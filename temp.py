@@ -3,6 +3,7 @@ from wrappers.UR5Wrapper import UR5Wrapper
 from wrappers.GripperWrapper import GripperWrapper
 from time import sleep
 from wrappers.math_utils import convertControllerAxesToUR5, printArray
+import numpy as np
 
 # URX -------------------------
 
@@ -30,6 +31,7 @@ while True:
 print("Ready")
 
 while(True):
+  gripper.update()
   reset_robots = controller.get_A()
   if(reset_robots):
     arm.reset_to_init()
@@ -53,4 +55,6 @@ while(True):
   if(gripperHeld or right_trigger):
     sleep(timeout)
 
-  prev_held_trigger = right_trigger
+  overall_state = np.array(arm.getState())
+  overall_state = np.append(overall_state, np.array(gripper.getState()))
+  print(overall_state)

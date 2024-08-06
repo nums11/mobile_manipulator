@@ -30,10 +30,13 @@ class GripperWrapper:
   
   def move(self, pos: int, speed: int = 255, force: int = 0):
     self.gripper.move(pos=pos, speed=speed, force=force)
+
+  def getPosition(self):
+    return self.status.position
     
   # Currently only returns the position of the whole gripper
   def getState(self):
-    return np.array(self.status.position)
+    return np.array(self.status.position.po)
     
 if __name__ == "__main__":
   gripper = GripperWrapper('COM6')
