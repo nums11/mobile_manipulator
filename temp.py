@@ -12,7 +12,6 @@ left_robot_ip = "192.168.2.2"
 timeout = 0.01
 
 arm = UR5Wrapper(left_robot_ip)
-printArray(arm.get_pose())
 arm.reset_to_init()
 
 gripper = GripperWrapper('/dev/ttyUSB0')
@@ -20,6 +19,8 @@ gripper = GripperWrapper('/dev/ttyUSB0')
 controller = OculusWrapper()
 
 prev_held_trigger = False
+
+# gripper.activate()
 
 while True:
   gripper.update()
@@ -44,7 +45,7 @@ while(True):
     delta_movement = controller.get_right_controller_delta()
     delta_movement = convertControllerAxesToUR5(delta_movement)
 
-    arm.go_to_position(delta_movement, wait=False)
+    arm.go_to_position(delta_movement)
 
   gripperHeld, gripperPos = controller.get_right_gripper()
   gripper.move(int(gripperPos * 255), 255, 255)

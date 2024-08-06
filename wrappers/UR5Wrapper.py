@@ -13,7 +13,7 @@ Class that allows you to set a home position and then command new positions for 
 
 class UR5Wrapper:
     def __init__(self, robot_ip):
-        self.robot = urx.Robot(robot_ip)
+        self.robot = urx.Robot(robot_ip, use_rt=True)
         self.max_movement = 0.2
         self.move_time = 0.5
         self.init_pose = [1.57, -1.57, -2.66, -2.02, -1.57, 0.2]
@@ -32,7 +32,6 @@ class UR5Wrapper:
         self.updateModbusPosition(self.init_pose_modbus)
 
     def get_pose(self):
-        print(self.robot.getj(True))
         return self.robot.get_pose_array(True)
 
     # Sets relative position
@@ -45,11 +44,9 @@ class UR5Wrapper:
         return desired_pose
 
     # Takes in delta position change from home position
-    def go_to_position(self, position, wait=False):
+    def go_to_position(self, position):
         curr_pose = self.robot.get_pose_array()
         desired_pose = getMovement(curr_pose, self.home_position + position, self.max_movement)
-        print(desired_pose)
-
         self.updateModbusPosition(desired_pose)
 
     # Goes to predefined starting position
@@ -69,5 +66,4 @@ class UR5Wrapper:
             builder.reset()
             builder.add_16bit_int(int(position[i]))
             payload = builder.to_registers()
-            print(payload)
             self.client.write_register(128 + i, payload[0])
