@@ -46,6 +46,7 @@ class UR5Wrapper:
     # Takes in delta position change from home position
     def go_to_position(self, position):
         curr_pose = self.robot.get_pose_array()
+        print("Desired position arm space \t", self.home_position + position)
         desired_pose = getMovement(curr_pose, self.home_position + position, self.max_movement)
         self.updateModbusPosition(desired_pose)
 
